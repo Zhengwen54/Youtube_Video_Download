@@ -2,21 +2,42 @@ import yt_dlp
 import requests
 import os
 
+import yt_dlp
+import requests
+import os
+
 def download_youtube_video(url, output_folder):
     try:
         ydl_opts = {
-            'outtmpl': f'{output_folder}/%(title)s.%(ext)s',  # 输出格式
-            'format': 'bestvideo+bestaudio/best',  # 下载最清晰的视频和音频并合并
-            'merge_output_format': 'mp4',  # 合并后的输出格式
-            'ffmpeg_location': 'E:/ffmpeg-7.0.2-essentials_build/bin/ffmpeg.exe',  #  ffmpeg.exe 路径
+            'outtmpl': f'{output_folder}/%(title)s.%(ext)s',
+            'format': 'bv*+ba/best',
+            'merge_output_format': 'mp4',
+            'ffmpeg_location': 'E:/ffmpeg-7.0.2-essentials_build/bin/ffmpeg.exe',
+
+            # 🔥关键：伪装浏览器 + 使用cookies
+            'http_headers': {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+                'Accept-Language': 'en-US,en;q=0.9'
+            },
+            'cookiefile': r'E:\Desktop\Youtube_video_LEGO\Youtube_Video_Download\www.youtube.com_cookies.txt',
+
+            'retries': 10,
+            'fragment_retries': 10,
+            'skip_unavailable_fragments': True,
+
+            # 避免断点续传导致403
+            'continuedl': False,
+            'nocheckcertificate': True,
         }
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
 
         print(f"视频已成功下载到 {output_folder}")
+
     except Exception as e:
         print(f"发生错误: {e}")
+
 
 def remove_time_param(youtube_url):
     # 找到 '?t=' 或 '&t=' 的起始位置
@@ -93,28 +114,7 @@ def BanYun(url,output_folder):
 
 
 
-url = "https://www.youtube.com/watch?v=wF440R5p7-8&t=2s"
+url = 'https://www.youtube.com/@IronBrick96/videos'
 output_folder = "Video"
 BanYun(url,output_folder)
 
-
-DaiBanYun = [
-    "https://rebrickable.com/mocs/MOC-106136/TheOctan/42009-c-model-9397-logging-track/#details",
-    'https://www.youtube.com/@MrTekneex/videos',
-    "https://www.youtube.com/shorts/s0abjXdFezE"#短视频塔吊
-    "https://www.youtube.com/@512TechProj/videos"
-    'https://www.youtube.com/watch?v=MtxnVHvTrMk'
-    'https://www.youtube.com/@IronBrick96/videos'
-    'https://www.youtube.com/playlist?list=PLZnsbSOjLbu2DD17eZVFy9zAN--joQbjR'
-
-
-
-    'https://www.flickr.com/photos/rynning/'
-    'https://www.youtube.com/@dirtzonebrick/videos'#
-    
-
-    'https://rebrickable.com/mocs/MOC-134368/Don_Santos/renault-magnum-solo-with-lift/#details'
-    
-    'https://www.youtube.com/@tatrovak563/videos'
-
-]
